@@ -1,11 +1,12 @@
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.Flow
+import BoardingState.*
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 
-
+val bannedPassenger = setOf("Nogartse")
 
 fun main() {
     runBlocking {
@@ -15,17 +16,37 @@ fun main() {
             "${it.passengerName} (${it.flightNumber})"
         }
         println("Found flights for $flightDescriptions")
-        flights.forEach {
-            watchFlight(it)
+
+        val flightsAtGate = MutableStateFlow(flights.size)
+        launch {
+            flightsAtGate
+                .takeWhile { it > 0 }
+                .onCompletion {
+                    println("Finished tracking all flights")
+                }
+                .collect { flightCount ->
+                    println("There are $flightCount flights being tracked")
+                }
+
         }
 
+        launch {
+            flights.forEach {
+                watchFlight(it)
+                flightsAtGate.value = flightsAtGate.value - 1
+            }
+        }
     }
 }
 
-fun watchFlight(initialFlight: FlightStatus) {
-    val currentFlight: Flow<FlightStatus> = flow {
+suspend fun watchFlight(initialFlight: FlightStatus) {
+    val passengerName = initialFlight.passengerName
+    val currentFlight: Flow<FlightStatus> = flow<FlightStatus> {
+        require(passengerName !in bannedPassenger) {
+            "Cannot track $passengerName's flight. They are banned from airport."
+        }
         var flight = initialFlight
-        repeat(5) {
+        while (flight.departureTimeInMinutes >= 0 && !flight.isFlightCanceled) {
             emit(flight)
             delay(1000)
             flight = flight.copy(
@@ -33,6 +54,23 @@ fun watchFlight(initialFlight: FlightStatus) {
             )
         }
     }
+
+    currentFlight
+        .map { flight ->
+            when (flight.boardingStatus) {
+                FlightCanceled -> "Your flight was canceled"
+                BoardingNotStarted -> "Boarding will start soon"
+                WaitingToBoard -> "Other passengers are boarding"
+                Boarding -> "You can now board the plane"
+                BoardingEnded -> "The boarding doors have closed"
+            } + " (Flight departs in ${flight.departureTimeInMinutes} minutes) "
+        }
+        .onCompletion {
+            println("Finished tracking $passengerName's flight")
+        }
+        .collect { status ->
+            println("$passengerName: $status")
+        }
 }
 
 suspend fun fetchFlights(

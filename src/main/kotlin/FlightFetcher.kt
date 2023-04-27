@@ -13,19 +13,19 @@ private const val FLIGHT_ENDPOINT = "$BASE_URL/flight"
 private const val LOYALTY_ENDPOINT = "$BASE_URL/loyalty"
 
 
-fun main() {
-
-    runBlocking {
-        println("Started")
-        launch {
-            val flight = fetchFlight("Madrigal")
-            println(flight)
-        }
-        println("Finished")
-    }
-
-
-}
+//fun main() {
+//
+//    runBlocking {
+//        println("Started")
+//        launch {
+//            val flight = fetchFlight("Madrigal")
+//            println(flight)
+//        }
+//        println("Finished")
+//    }
+//
+//
+//}
 
 suspend fun fetchFlight(passengerName: String): FlightStatus = coroutineScope {
     val client = HttpClient(CIO)
