@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="52eb0157-79f0-4e50-bcf9-86f9786df35c" name="Changes" comment="Chapter 21. 27.04.2023">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/FlightFetcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/FlightFetcher.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/FlightStatus.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/FlightStatus.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/FlightWatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/FlightWatcher.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +77,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682566019896</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Chapter 21. 27.04.2023">
+      <created>1682575526483</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1682575526483</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
